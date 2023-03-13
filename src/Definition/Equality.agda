@@ -1,7 +1,7 @@
 module Definition.Equality where
 
 infix 0 _≡_
-data _≡_ {A : Set} (a : A) : A → Set where
+data _≡_ {ℓ} {A : Set ℓ} (a : A) : A → Set where
   refl : a ≡ a
 
 {-# BUILTIN EQUALITY _≡_ #-}
