@@ -6,6 +6,7 @@ open import Definition.Product
 
 module Definition.List where
 
+infixr 10 _::_
 data List {ℓ} (A : Set ℓ) : Set ℓ where
   [] : List A
   _::_ : (x : A) (xs : List A) → List A
