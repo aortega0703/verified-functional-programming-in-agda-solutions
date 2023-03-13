@@ -62,6 +62,22 @@ suc m * n = n + (m * n)
 *assoc zero n p = refl
 *assoc (suc m) n p rewrite *distribr n (m * n) p | *assoc m n p = refl
 
+_≤_ : ℕ → ℕ → Bool
+zero ≤ zero = True
+zero ≤ suc n = True
+suc m ≤ zero = False
+suc m ≤ suc n = m ≤ n
+
+≤-trans : ∀ {x y z : ℕ} → x ≤ y ≡ True → y ≤ z ≡ True → x ≤ z ≡ True
+≤-trans {zero} {zero} {zero} x≤y y≤z = refl
+≤-trans {zero} {zero} {suc z} x≤y y≤z = refl
+≤-trans {zero} {suc y} {suc z} x≤y y≤z = refl
+≤-trans {suc x} {suc y} {suc z} x≤y y≤z = ≤-trans {x} {y} {z} x≤y y≤z
+
+≤-suc : ∀ {x : ℕ} → x ≤ suc x ≡ True
+≤-suc {zero} = refl
+≤-suc {suc n} = ≤-suc {n}
+
 _<_ : ℕ → ℕ → Bool
 zero < zero = False
 zero < suc n = True
