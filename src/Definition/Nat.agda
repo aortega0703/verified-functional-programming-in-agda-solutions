@@ -24,13 +24,13 @@ pred (suc n) = n
 +0 zero = refl
 +0 (suc n) rewrite +0 n = refl
 
-+assoc : ∀ (m n p : ℕ) → m + (n + p) ≡ (m + n) + p
-+assoc zero n p = refl
-+assoc (suc m) n p rewrite +assoc m n p = refl
-
 +suc : ∀ (m n : ℕ) → m + suc n ≡ suc (m + n)
 +suc zero n = refl
 +suc (suc m) n rewrite +suc m n = refl
+
++assoc : ∀ (m n p : ℕ) → m + (n + p) ≡ (m + n) + p
++assoc zero n p = refl
++assoc (suc m) n p rewrite +assoc m n p = refl
 
 +comm : ∀ (m n : ℕ) → m + n ≡ n + m
 +comm zero n rewrite 0+ n | +0 n = refl
@@ -108,3 +108,6 @@ suc m =ℕ suc n = m =ℕ n
 
 =ℕ-from-≡ : ∀ {x y : ℕ} → x ≡ y → x =ℕ y ≡ True
 =ℕ-from-≡ {x} {y} x≡y rewrite x≡y = =ℕ-refl y 
+
+suc-inj : ∀ {m n : ℕ} → suc m ≡ suc n → m ≡ n
+suc-inj {n} {m} p rewrite (=ℕ-to-≡{n} (=ℕ-from-≡ p)) = refl

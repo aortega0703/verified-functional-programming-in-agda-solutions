@@ -33,6 +33,6 @@ a xor b = ¬ (a ⇔ b)
 _⇒_ : Bool → Bool → Bool
 a ⇒ b = ¬ a ∨ b
 
-if_then_else_ : ∀ {A : Set} → Bool → A → A → A
+if_then_else_ : ∀ {ℓ} {A : Set ℓ} → Bool → A → A → A
 if True then x else y = x
 if False then x else y = y

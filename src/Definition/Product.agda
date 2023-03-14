@@ -17,5 +17,11 @@ A × B = Σ A (λ x → B)
        → (A × B → C × D)
 ⟨ f , g ⟩ (a , b) = f a , g b
 
+fst : ∀ {ℓ ℓ'} {A : Set ℓ} {B : Set ℓ'} → A × B → A
+fst (a , b) = a
+
+snd : ∀ {ℓ ℓ'} {A : Set ℓ} {B : Set ℓ'} → A × B → B
+snd (a , b) = b
+
 keep : ∀{ℓ}{A : Set ℓ} → (x : A) → Σ A (λ y → x ≡ y)
 keep x = ( x , refl )
