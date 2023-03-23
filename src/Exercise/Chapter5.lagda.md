@@ -5,6 +5,8 @@ open import Definition.Equality
 open import Definition.Bool
 open import Definition.Nat
 open import Definition.Vector
+open import Definition.List using (List) renaming (_::_ to _::L_; [] to []L)
+open import Definition.Product
 ```
 
 1. Using the vector type V in a nested fashion, fill in the hole below to define a
@@ -53,3 +55,23 @@ _*matrix_ [] N = []
 _*matrix_ (m :: ms) N with transpose N
 ...| Nᵗ = (map (λ x → m · x) Nᵗ) :: (ms *matrix N)
 ``` 
+
+3. vector.agda contains functions V-to-L and L-to-V for converting between
+vectors and lists. State and prove a theorem expressing the idea that
+converting a vector to a list and then back to a vector results in the same
+vector.
+```agda
+vector-to-list : ∀ {ℓ} {A : Set ℓ} {n : ℕ} → Vector A n → List A
+vector-to-list [] = []L
+vector-to-list (x :: xs) = x ::L (vector-to-list xs)
+
+list-to-vector : ∀ {ℓ} {A : Set ℓ} → List A → Σ ℕ (λ n → Vector A n)
+list-to-vector []L = 0 , []
+list-to-vector (x ::L xs) with list-to-vector xs
+...| (n , ys) = suc n , (x :: ys)
+
+vector↑↓ : ∀ {ℓ} {A : Set ℓ} {n : ℕ} (xs : Vector A n)
+  → list-to-vector (vector-to-list xs) ≡ (n , xs)
+vector↑↓ [] = refl
+vector↑↓ (x :: xs) rewrite vector↑↓ xs = refl
+```
