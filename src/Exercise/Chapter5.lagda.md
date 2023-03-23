@@ -75,3 +75,13 @@ vector↑↓ : ∀ {ℓ} {A : Set ℓ} {n : ℕ} (xs : Vector A n)
 vector↑↓ [] = refl
 vector↑↓ (x :: xs) rewrite vector↑↓ xs = refl
 ```
+
+4. Write a function which takes a vector of type V (A × B) n and returns
+a pair of vectors, one of type V A n and another of type V B n. This is
+similar to the unzip function in Haskell, only with vectors instead of lists.
+```agda
+unzip : ∀ {ℓ} {A B : Set ℓ} {n : ℕ} → Vector (A × B) n → (Vector A n) × (Vector B n)
+unzip [] = [] , []
+unzip ((y , z) :: xs) with unzip xs
+...| ys , zs = (y :: ys) , (z :: zs)
+```
