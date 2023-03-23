@@ -5,8 +5,12 @@ module Definition.Bool-Relations {ℓ} {A : Set ℓ}
 
 open import Definition.Equality
 open import Definition.Product
-open import Definition.Relations (λ a b → a ≤A b ≡ True) public
-  using (reflexive; transitive)
+
+reflexive : Set ℓ
+reflexive = ∀ {a : A} → a ≤A a ≡ True
+
+transitive : Set ℓ
+transitive = ∀ {a b c : A} → a ≤A b ≡ True → b ≤A c ≡ True → a ≤A c ≡ True
 
 total : Set ℓ
 total = ∀ {a b : A} → a ≤A b ≡ False → b ≤A a ≡ True
