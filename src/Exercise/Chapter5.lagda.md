@@ -48,4 +48,8 @@ _·_ : ∀ {n : ℕ} → Vector ℕ n → Vector ℕ n → ℕ
 [] · [] = 0
 (x :: xs) · (y :: ys) = x * y + (xs · ys)
 
+_*matrix_ : ∀ {m n p : ℕ} → m by n matrix → n by p matrix → m by p matrix
+_*matrix_ [] N = []
+_*matrix_ (m :: ms) N with transpose N
+...| Nᵗ = (map (λ x → m · x) Nᵗ) :: (ms *matrix N)
 ``` 
