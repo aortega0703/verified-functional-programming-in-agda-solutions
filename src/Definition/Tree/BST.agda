@@ -39,3 +39,11 @@ insert d (node d′ l r p1 p2) with keep (d ≤A d′)
 ...| l′ rewrite p = node d′ l′ r (min-mono2 p1) (≤A-trans p2 b≤max[a,b])
 insert d (node d′ l r p1 p2) | False , p with insert d r 
 ...| r′ rewrite p = node d′ l r′ (≤A-trans min[a,b]≤b p1) (max-mono2 p2)
+
+remove-min : ∀ {l u : A} → BST l u → Maybe (A × BST l u)
+remove-min (leaf p) = nothing
+remove-min (node d (leaf pl) (leaf pr) p1 p2) = just (d , (leaf (≤A-trans (≤A-trans (≤A-trans p1 pl) pr) p2)))
+remove-min (node d (leaf x) (node d₁ r r₁ x₁ x₂) pl pr) = just (d , (node d₁ r r₁ (≤A-trans (≤A-trans pl x) x₁) (≤A-trans x₂ pr)))
+remove-min (node d (node d₁ l l₁ x x₁) r pl pr) with remove-min (node d₁ l l₁ x x₁)
+...| nothing = nothing
+...| just (a , bt) = just (a , (node d bt r pl pr))
