@@ -1,7 +1,7 @@
 open import Definition.Bool-Relations using (transitive; total)
 open import Definition.Bool
 
-module Definition.Tree.BST (A : Set) (_≤A_ : A → A → Bool)
+module Definition.Tree.BST {ℓ} (A : Set ℓ) (_≤A_ : A → A → Bool)
   (≤A-trans : transitive _≤A_)
   (≤A-total : total _≤A_) where 
 
@@ -11,7 +11,7 @@ open import Definition.Product
 open import Definition.Maybe
 open import Definition.Min-Max (_≤A_) (≤A-trans) (≤A-total)
 
-data BST : A → A → Set where
+data BST : A → A → Set ℓ where
   leaf : ∀ {l u : A} → l ≤A u ≡ True → BST l u
   node : ∀ {l l′ u u′ : A} (d : A) → BST l′ d → BST d u′ 
     → l ≤A l′ ≡ True → u′ ≤A u ≡ True → BST l u

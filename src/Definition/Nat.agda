@@ -1,6 +1,7 @@
 module Definition.Nat where
 open import Definition.Equality
 open import Definition.Bool
+open import Definition.Bool-Relations
 
 data ℕ : Set where
   zero : ℕ
@@ -72,11 +73,17 @@ zero ≤ suc n = True
 suc m ≤ zero = False
 suc m ≤ suc n = m ≤ n
 
-≤-trans : ∀ {x y z : ℕ} → x ≤ y ≡ True → y ≤ z ≡ True → x ≤ z ≡ True
+≤-trans : transitive _≤_
 ≤-trans {zero} {zero} {zero} x≤y y≤z = refl
 ≤-trans {zero} {zero} {suc z} x≤y y≤z = refl
 ≤-trans {zero} {suc y} {suc z} x≤y y≤z = refl
 ≤-trans {suc x} {suc y} {suc z} x≤y y≤z = ≤-trans {x} {y} {z} x≤y y≤z
+
+≤-total : ∀ {x y : ℕ} → x ≤ y ≡ False → y ≤ x ≡ True
+≤-total {zero} {zero} ()
+≤-total {zero} {suc y} ()
+≤-total {suc x} {zero} p = refl
+≤-total {suc x} {suc y} p = ≤-total {x} {y} p
 
 ≤-suc : ∀ {x : ℕ} → x ≤ suc x ≡ True
 ≤-suc {zero} = refl

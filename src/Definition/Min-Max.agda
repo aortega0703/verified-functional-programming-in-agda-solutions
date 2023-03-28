@@ -1,6 +1,6 @@
 open import Definition.Bool
 open import Definition.Bool-Relations
-module Definition.Min-Max {A : Set} (_≤A_ : A → A → Bool)
+module Definition.Min-Max {ℓ} {A : Set ℓ} (_≤A_ : A → A → Bool)
   (≤A-trans : transitive _≤A_)
   (≤A-total : total _≤A_)
   where
