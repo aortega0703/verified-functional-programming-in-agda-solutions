@@ -53,3 +53,25 @@ remove-max (node d l (leaf pr) p1 p2) = just (d , dec-lb (inc-ub l (≤A-trans _
 remove-max (node d l (node d₁ r r₁ x x₁) pl pr) with remove-min (node d₁ r r₁ x x₁)
 ...| nothing = nothing
 ...| just (a , bt) = just (a , (node d l bt pl pr))
+
+{-# TERMINATING #-}
+remove : ∀ {l u : A} → A → BST l u → Maybe (A × BST l u)
+remove a (leaf x) = nothing
+remove a (node d tl (leaf x) pl pr) with a ≤A d
+...| True with d ≤A a
+...| True = just (d , dec-lb (inc-ub tl (≤A-trans _ _ _ x pr)) pl)
+...| False with remove a tl
+...| nothing = nothing
+...| just (a′ , bt′) = just (a′ , (node d bt′ (leaf x) pl pr))
+remove a (node d tl (leaf x) pl pr) | False = nothing
+remove a (node d tl (node d₁ tr tr₁ x x₁) pl pr) with a ≤A d
+...| True with d ≤A a
+...| True  with remove-min (node d₁ tr tr₁ x x₁)
+...| nothing = nothing
+...| just (a′ , bt′) = just (d , node d tl bt′ pl pr)
+remove a (node d tl (node d₁ tr tr₁ x x₁) pl pr) | True | False with remove a tl
+...| nothing = nothing
+...| just (a′ , bt′) = just (a′ , (node d bt′ (node d₁ tr tr₁ x x₁) pl pr))
+remove a (node d tl (node d₁ tr tr₁ x x₁) pl pr) | False with remove a (node d₁ tr tr₁ x x₁)
+...| nothing = nothing
+...| just (a′ , bt′) = just (a′ , (node d tl bt′ pl pr))

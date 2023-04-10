@@ -1,6 +1,6 @@
 module Definition.Level where
 
-import Agda.Primitive 
+import Agda.Primitive
 
 open Agda.Primitive public
   using    (Level ; _⊔_ ; lsuc ; lzero)
