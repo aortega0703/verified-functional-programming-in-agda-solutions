@@ -7,6 +7,10 @@ open import Definition.Nat
 open import Definition.Vector
 open import Definition.List using (List) renaming (_::_ to _::L_; [] to []L)
 open import Definition.Product
+open import Definition.Maybe
+import Definition.Tree.BST
+open Definition.Tree.BST ℕ _≤_ ≤-trans ≤-total
+  using (BST; leaf; insert; remove-min; remove-max)
 ```
 
 1. Using the vector type V in a nested fashion, fill in the hole below to define a
@@ -25,9 +29,9 @@ functions).
 zero-matrix : (m n : ℕ) → m by n matrix
 zero-matrix m n = repeat m (repeat n 0)
 
-matrix-elt : 
-    {m n : ℕ} → m by n matrix → (i j : ℕ) 
-  → {i < m ≡ True} → {j < n ≡ True} 
+matrix-elt :
+    {m n : ℕ} → m by n matrix → (i j : ℕ)
+  → {i < m ≡ True} → {j < n ≡ True}
   → ℕ
 matrix-elt M i j {p} {q} = nth j (nth i M {p}) {q}
 
@@ -42,7 +46,7 @@ create_empties {n = Z} = repeat Z []
 
 transpose : ∀ {m n : ℕ} → m by n matrix → n by m matrix
 transpose [] = create_empties
-transpose (x :: xs) = 
+transpose (x :: xs) =
   let xs_trans = transpose xs in
   zip (_::_) x xs_trans
 
@@ -54,7 +58,7 @@ _*matrix_ : ∀ {m n p : ℕ} → m by n matrix → n by p matrix → m by p mat
 _*matrix_ [] N = []
 _*matrix_ (m :: ms) N with transpose N
 ...| Nᵗ = (map (λ x → m · x) Nᵗ) :: (ms *matrix N)
-``` 
+```
 
 3. vector.agda contains functions V-to-L and L-to-V for converting between
 vectors and lists. State and prove a theorem expressing the idea that
@@ -84,4 +88,7 @@ unzip : ∀ {ℓ} {A B : Set ℓ} {n : ℕ} → Vector (A × B) n → (Vector A 
 unzip [] = [] , []
 unzip ((y , z) :: xs) with unzip xs
 ...| ys , zs = (y :: ys) , (z :: zs)
+
+test : Maybe (ℕ × BST 0 1)
+test = remove-max (insert 0 (insert 1 (insert 0 (insert {1} {1} 1 (leaf refl)))))
 ```

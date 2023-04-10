@@ -52,11 +52,11 @@ suc m * n = n + (m * n)
 
 *suc : ∀ (m n : ℕ) → m * suc n ≡ m + m * n
 *suc zero n = refl
-*suc (suc m) n 
-  rewrite 
-      *suc m n 
-    | +assoc n m (m * n) 
-    | +comm n m 
+*suc (suc m) n
+  rewrite
+      *suc m n
+    | +assoc n m (m * n)
+    | +comm n m
     | +assoc m n (m * n) = refl
 
 *comm : ∀ (m n : ℕ) → m * n ≡ n * m
@@ -68,22 +68,22 @@ suc m * n = n + (m * n)
 *assoc (suc m) n p rewrite *distribr n (m * n) p | *assoc m n p = refl
 
 _≤_ : ℕ → ℕ → Bool
-zero ≤ zero = True
-zero ≤ suc n = True
+zero  ≤ zero = True
+zero  ≤ suc n = True
 suc m ≤ zero = False
 suc m ≤ suc n = m ≤ n
 
 ≤-trans : transitive _≤_
-≤-trans {zero} {zero} {zero} x≤y y≤z = refl
-≤-trans {zero} {zero} {suc z} x≤y y≤z = refl
-≤-trans {zero} {suc y} {suc z} x≤y y≤z = refl
-≤-trans {suc x} {suc y} {suc z} x≤y y≤z = ≤-trans {x} {y} {z} x≤y y≤z
+≤-trans  zero    zero    zero   x≤y y≤z = refl
+≤-trans  zero    zero   (suc z) x≤y y≤z = refl
+≤-trans  zero   (suc y) (suc z) x≤y y≤z = refl
+≤-trans (suc x) (suc y) (suc z) x≤y y≤z = ≤-trans x y z x≤y y≤z
 
-≤-total : ∀ {x y : ℕ} → x ≤ y ≡ False → y ≤ x ≡ True
-≤-total {zero} {zero} ()
-≤-total {zero} {suc y} ()
-≤-total {suc x} {zero} p = refl
-≤-total {suc x} {suc y} p = ≤-total {x} {y} p
+≤-total : total _≤_
+≤-total  zero    zero   ()
+≤-total  zero   (suc y) ()
+≤-total (suc x)  zero   p = refl
+≤-total (suc x) (suc y) p = ≤-total x y p
 
 ≤-suc : ∀ {x : ℕ} → x ≤ suc x ≡ True
 ≤-suc {zero} = refl
@@ -114,7 +114,7 @@ suc m =ℕ suc n = m =ℕ n
 =ℕ-to-≡ {suc x} {suc y} x=ℕy rewrite =ℕ-to-≡ {x} {y} x=ℕy = refl
 
 =ℕ-from-≡ : ∀ {x y : ℕ} → x ≡ y → x =ℕ y ≡ True
-=ℕ-from-≡ {x} {y} x≡y rewrite x≡y = =ℕ-refl y 
+=ℕ-from-≡ {x} {y} x≡y rewrite x≡y = =ℕ-refl y
 
 suc-inj : ∀ {m n : ℕ} → suc m ≡ suc n → m ≡ n
 suc-inj {n} {m} p rewrite (=ℕ-to-≡{n} (=ℕ-from-≡ p)) = refl

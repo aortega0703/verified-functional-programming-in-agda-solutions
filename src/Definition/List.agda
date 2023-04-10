@@ -48,12 +48,12 @@ reverse´ (x :: xs) ys = reverse´ xs (x :: ys)
 reverse : ∀ {ℓ} {A : Set ℓ} → List A → List A
 reverse xs = reverse´ xs []
 
-length-++ : ∀ {ℓ} {A : Set ℓ} (xs ys : List A) 
+length-++ : ∀ {ℓ} {A : Set ℓ} (xs ys : List A)
   → length (xs ++ ys) ≡ length xs + length ys
 length-++ [] ys = refl
 length-++ (x :: xs) ys rewrite length-++ xs ys = refl
 
-++-assoc : ∀ {ℓ} {A : Set ℓ} (xs ys zs : List A) 
+++-assoc : ∀ {ℓ} {A : Set ℓ} (xs ys zs : List A)
   → (xs ++ ys) ++ zs ≡ xs ++ (ys ++ zs)
 ++-assoc [] ys zs = refl
 ++-assoc (x :: xs) ys zs rewrite ++-assoc xs ys zs = refl
@@ -61,9 +61,9 @@ length-++ (x :: xs) ys rewrite length-++ xs ys = refl
 length-filter : ∀ {ℓ} {A : Set ℓ} (f : A → Bool) (xs : List A)
   → length (filter f xs) ≤ length xs ≡ True
 length-filter f [] = refl
-length-filter f (x :: xs) with f x 
+length-filter f (x :: xs) with f x
 ... | True  = length-filter f xs
-... | False = ≤-trans {length (filter f xs)} (length-filter f xs) (≤-suc {length xs})  
+... | False = ≤-trans (length (filter f xs)) _ _ (length-filter f xs) (≤-suc {length xs})
 
 filter-idem : ∀ {ℓ} {A : Set ℓ} (f : A → Bool) (xs : List A)
   → filter f (filter f xs) ≡ filter f xs
@@ -74,9 +74,9 @@ filter-idem f (x :: xs) with keep (f x)
 
 length-reverse´ : ∀ {ℓ} {A : Set ℓ} (xs ys : List A) → length (reverse´ xs ys) ≡ length xs + length ys
 length-reverse´ [] ys = refl
-length-reverse´ (x :: xs) ys 
-  rewrite 
-      length-reverse´ xs (x :: ys) 
+length-reverse´ (x :: xs) ys
+  rewrite
+      length-reverse´ xs (x :: ys)
     | +suc (length xs) (length ys) = refl
 
 length-reverse : ∀ {ℓ} {A : Set ℓ} (xs : List A) → length (reverse xs) ≡ length xs
